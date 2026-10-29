@@ -31,3 +31,17 @@ jobs:
         run: |
           test -n "$FABRIC_WORKSPACE_ID"
           echo "Fabric workspace ID is configured."
+      - name: Validate Fabric REST API access
+        shell: bash
+        env:
+          FABRIC_WORKSPACE_ID: ${{ vars.FABRIC_WORKSPACE_ID }}
+        run: |
+          set -euo pipefail
+
+          TOKEN=$(az account get-access-token \
+            --resource https://api.fabric.microsoft.com \
+            --query accessToken -o tsv)
+
+          curl --fail-with-body --silent --show-error \
+            --header "Authorization: Bearer $TOKEN" \
+            "https://api.fabric.microsoft.com/v1/workspaces/$FABRIC_WORKSPACE_ID"
