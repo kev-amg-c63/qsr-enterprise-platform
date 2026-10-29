@@ -1,0 +1,9 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/2.0.0/schema.json",
+  "version": "4.0",
+  "datasetReference": {
+    "byConnection": {
+      "connectionString": "Data Source=powerbi://api.powerbi.com/v1.0/myorg/qsr-dev-data-platform-centralus;initial catalog=sm_qsr_enterprise;integrated security=ClaimsToken;semanticmodelid=58ffeedf-5799-4f9f-abb0-c41082553f9d"
+    }
+  }
+}

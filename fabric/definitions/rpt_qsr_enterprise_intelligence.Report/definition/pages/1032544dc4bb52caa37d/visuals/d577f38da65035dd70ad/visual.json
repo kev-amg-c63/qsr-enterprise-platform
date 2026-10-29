@@ -1,0 +1,33 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "d577f38da65035dd70ad",
+  "position": {
+    "x": 48.333333333333336,
+    "y": 1948.3333333333335,
+    "z": 7,
+    "height": 50,
+    "width": 1820,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Profitability metrics use synthetic POC data. Food cost is assumed to include waste. Operating profit excludes occupancy, utilities, franchise fees, marketing, and other unmodeled expenses."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

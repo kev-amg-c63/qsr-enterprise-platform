@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "1032544dc4bb52caa37d",
+  "displayName": "Store Profitability",
+  "displayOption": "FitToPage",
+  "height": 2000,
+  "width": 1920,
+  "visualInteractions": [
+    {
+      "source": "e774277b151470acd34e",
+      "target": "9d360ac681930e107a08",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e774277b151470acd34e",
+      "target": "c781c5ee013b0396992c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9cab805cae8d5cb7e97c",
+      "target": "9d360ac681930e107a08",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e774277b151470acd34e",
+      "target": "9cab805cae8d5cb7e97c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c781c5ee013b0396992c",
+      "target": "c9042a12b07e93dae459",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c781c5ee013b0396992c",
+      "target": "e11e7a0655845c2cdd81",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e774277b151470acd34e",
+      "target": "c9042a12b07e93dae459",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c9042a12b07e93dae459",
+      "target": "e774277b151470acd34e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c9042a12b07e93dae459",
+      "target": "c781c5ee013b0396992c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c9042a12b07e93dae459",
+      "target": "9cab805cae8d5cb7e97c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c9042a12b07e93dae459",
+      "target": "9d360ac681930e107a08",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c781c5ee013b0396992c",
+      "target": "9cab805cae8d5cb7e97c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c781c5ee013b0396992c",
+      "target": "9d360ac681930e107a08",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c781c5ee013b0396992c",
+      "target": "e774277b151470acd34e",
+      "type": "NoFilter"
+    }
+  ]
+}
