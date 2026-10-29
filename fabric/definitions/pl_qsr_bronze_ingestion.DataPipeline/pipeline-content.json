@@ -1,0 +1,526 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Get Metadata1",
+        "type": "GetMetadata",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "fieldList": [
+            "exists"
+          ],
+          "datasetSettings": {
+            "annotations": [],
+            "type": "Binary",
+            "typeProperties": {
+              "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": "DimDate.csv",
+                "folderPath": "master-data",
+                "fileSystem": "qsr-source-data"
+              }
+            },
+            "externalReferences": {
+              "connection": "752280c3-cc03-41ed-834f-3dcf2c6a0d9a"
+            }
+          },
+          "storeSettings": {
+            "type": "AzureBlobFSReadSettings",
+            "recursive": true,
+            "enablePartitionDiscovery": false
+          },
+          "formatSettings": {
+            "type": "BinaryReadSettings"
+          }
+        }
+      },
+      {
+        "name": "Copy_FactData_To_Bronze",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Get Metadata1",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "BinarySource",
+            "storeSettings": {
+              "type": "AzureBlobFSReadSettings",
+              "recursive": true
+            },
+            "formatSettings": {
+              "type": "BinaryReadSettings"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "AzureBlobFSLocation",
+                  "folderPath": "pos",
+                  "fileSystem": "qsr-source-data"
+                }
+              },
+              "externalReferences": {
+                "connection": "752280c3-cc03-41ed-834f-3dcf2c6a0d9a"
+              }
+            }
+          },
+          "sink": {
+            "type": "BinarySink",
+            "storeSettings": {
+              "type": "AzureBlobStorageWriteSettings",
+              "copyBehavior": "PreserveHierarchy"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "lh_qsr_bronze",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "9dcbaac9-96ea-46aa-90c3-bc75f9de65ac",
+                    "artifactId": "5005d5ba-270c-4a6c-92bc-2fa6bc8c01bb",
+                    "rootFolder": "Files"
+                  }
+                }
+              },
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "pos"
+                }
+              }
+            }
+          },
+          "enableStaging": false,
+          "parallelCopies": 1,
+          "skipErrorFile": {
+            "fileMissing": false,
+            "dataInconsistency": false
+          },
+          "validateDataConsistency": true
+        }
+      },
+      {
+        "name": "Copy_Inventory_To_Bronze",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Copy_FactData_To_Bronze",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "BinarySource",
+            "storeSettings": {
+              "type": "AzureBlobFSReadSettings",
+              "recursive": true
+            },
+            "formatSettings": {
+              "type": "BinaryReadSettings"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "AzureBlobFSLocation",
+                  "folderPath": "inventory",
+                  "fileSystem": "qsr-source-data"
+                }
+              },
+              "externalReferences": {
+                "connection": "752280c3-cc03-41ed-834f-3dcf2c6a0d9a"
+              }
+            }
+          },
+          "sink": {
+            "type": "BinarySink",
+            "storeSettings": {
+              "type": "AzureBlobStorageWriteSettings",
+              "copyBehavior": "PreserveHierarchy"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "lh_qsr_bronze",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "9dcbaac9-96ea-46aa-90c3-bc75f9de65ac",
+                    "artifactId": "5005d5ba-270c-4a6c-92bc-2fa6bc8c01bb",
+                    "rootFolder": "Files"
+                  }
+                }
+              },
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "inventory"
+                }
+              }
+            }
+          },
+          "enableStaging": false,
+          "skipErrorFile": {
+            "fileMissing": false,
+            "dataInconsistency": false
+          },
+          "validateDataConsistency": true
+        }
+      },
+      {
+        "name": "Copy_Labor_To_Bronze",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Copy_Inventory_To_Bronze",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "BinarySource",
+            "storeSettings": {
+              "type": "AzureBlobFSReadSettings",
+              "recursive": true
+            },
+            "formatSettings": {
+              "type": "BinaryReadSettings"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "AzureBlobFSLocation",
+                  "folderPath": "labor",
+                  "fileSystem": "qsr-source-data"
+                }
+              },
+              "externalReferences": {
+                "connection": "752280c3-cc03-41ed-834f-3dcf2c6a0d9a"
+              }
+            }
+          },
+          "sink": {
+            "type": "BinarySink",
+            "storeSettings": {
+              "type": "AzureBlobStorageWriteSettings",
+              "copyBehavior": "PreserveHierarchy"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "lh_qsr_bronze",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "9dcbaac9-96ea-46aa-90c3-bc75f9de65ac",
+                    "artifactId": "5005d5ba-270c-4a6c-92bc-2fa6bc8c01bb",
+                    "rootFolder": "Files"
+                  }
+                }
+              },
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "labor"
+                }
+              }
+            }
+          },
+          "enableStaging": false,
+          "skipErrorFile": {
+            "fileMissing": false,
+            "dataInconsistency": false
+          },
+          "validateDataConsistency": true
+        }
+      },
+      {
+        "name": "Copy_Purchasing_To_Bronze",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Copy_Labor_To_Bronze",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "BinarySource",
+            "storeSettings": {
+              "type": "AzureBlobFSReadSettings",
+              "recursive": true
+            },
+            "formatSettings": {
+              "type": "BinaryReadSettings"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "AzureBlobFSLocation",
+                  "folderPath": "purchasing",
+                  "fileSystem": "qsr-source-data"
+                }
+              },
+              "externalReferences": {
+                "connection": "752280c3-cc03-41ed-834f-3dcf2c6a0d9a"
+              }
+            }
+          },
+          "sink": {
+            "type": "BinarySink",
+            "storeSettings": {
+              "type": "AzureBlobStorageWriteSettings",
+              "copyBehavior": "PreserveHierarchy"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "lh_qsr_bronze",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "9dcbaac9-96ea-46aa-90c3-bc75f9de65ac",
+                    "artifactId": "5005d5ba-270c-4a6c-92bc-2fa6bc8c01bb",
+                    "rootFolder": "Files"
+                  }
+                }
+              },
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "purchasing"
+                }
+              }
+            }
+          },
+          "enableStaging": false,
+          "skipErrorFile": {
+            "fileMissing": false,
+            "dataInconsistency": false
+          },
+          "validateDataConsistency": true
+        }
+      },
+      {
+        "name": "Copy_Finance_To_Bronze",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Copy_Purchasing_To_Bronze",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "BinarySource",
+            "storeSettings": {
+              "type": "AzureBlobFSReadSettings",
+              "recursive": true
+            },
+            "formatSettings": {
+              "type": "BinaryReadSettings"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "AzureBlobFSLocation",
+                  "folderPath": "finance",
+                  "fileSystem": "qsr-source-data"
+                }
+              },
+              "externalReferences": {
+                "connection": "752280c3-cc03-41ed-834f-3dcf2c6a0d9a"
+              }
+            }
+          },
+          "sink": {
+            "type": "BinarySink",
+            "storeSettings": {
+              "type": "AzureBlobStorageWriteSettings"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "lh_qsr_bronze",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "9dcbaac9-96ea-46aa-90c3-bc75f9de65ac",
+                    "artifactId": "5005d5ba-270c-4a6c-92bc-2fa6bc8c01bb",
+                    "rootFolder": "Files"
+                  }
+                }
+              },
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "finance"
+                }
+              }
+            }
+          },
+          "enableStaging": false,
+          "skipErrorFile": {
+            "fileMissing": false,
+            "dataInconsistency": false
+          },
+          "validateDataConsistency": true
+        }
+      },
+      {
+        "name": "Copy_Marketing_To_Bronze",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Copy_Finance_To_Bronze",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "BinarySource",
+            "storeSettings": {
+              "type": "AzureBlobFSReadSettings",
+              "recursive": true
+            },
+            "formatSettings": {
+              "type": "BinaryReadSettings"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "AzureBlobFSLocation",
+                  "folderPath": "marketing",
+                  "fileSystem": "qsr-source-data"
+                }
+              },
+              "externalReferences": {
+                "connection": "752280c3-cc03-41ed-834f-3dcf2c6a0d9a"
+              }
+            }
+          },
+          "sink": {
+            "type": "BinarySink",
+            "storeSettings": {
+              "type": "AzureBlobStorageWriteSettings",
+              "copyBehavior": "PreserveHierarchy"
+            },
+            "datasetSettings": {
+              "annotations": [],
+              "linkedService": {
+                "name": "lh_qsr_bronze",
+                "properties": {
+                  "annotations": [],
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "workspaceId": "9dcbaac9-96ea-46aa-90c3-bc75f9de65ac",
+                    "artifactId": "5005d5ba-270c-4a6c-92bc-2fa6bc8c01bb",
+                    "rootFolder": "Files"
+                  }
+                }
+              },
+              "type": "Binary",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "marketing"
+                }
+              }
+            }
+          },
+          "enableStaging": false,
+          "skipErrorFile": {
+            "fileMissing": false,
+            "dataInconsistency": false
+          },
+          "validateDataConsistency": true
+        }
+      }
+    ]
+  }
+}

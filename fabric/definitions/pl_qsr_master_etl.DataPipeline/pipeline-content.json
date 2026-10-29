@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "activities": [],
+    "parameters": {
+      "p_environment": {
+        "type": "string",
+        "defaultValue": "dev"
+      },
+      "p_load_type": {
+        "type": "string",
+        "defaultValue": "full"
+      },
+      "p_business_date": {
+        "type": "string",
+        "defaultValue": "2026-10-18"
+      },
+      "p_run_id": {
+        "type": "string"
+      },
+      "p_enable_quality_checks": {
+        "type": "bool",
+        "defaultValue": true
+      },
+      "p_source_system": {
+        "type": "string",
+        "defaultValue": "all"
+      }
+    }
+  }
+}
