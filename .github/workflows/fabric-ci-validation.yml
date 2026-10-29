@@ -1,0 +1,88 @@
+name: Fabric CI Validation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Fabric Definitions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate Fabric artifacts
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          root = Path("fabric/definitions")
+
+          if not root.is_dir():
+              raise SystemExit("Missing Fabric definitions directory")
+
+          expected = {
+              "Notebook": 11,
+              "DataPipeline": 4,
+              "SemanticModel": 1,
+              "Report": 1,
+          }
+
+          counts = {kind: 0 for kind in expected}
+          json_count = 0
+
+          for artifact in sorted(root.iterdir()):
+              if not artifact.is_dir():
+                  continue
+
+              kind = artifact.name.rsplit(".", 1)[-1]
+
+              if kind not in expected:
+                  raise SystemExit(
+                      f"Unexpected artifact type: {artifact.name}"
+                  )
+
+              counts[kind] += 1
+
+              if not (artifact / ".platform").is_file():
+                  raise SystemExit(
+                      f"Missing .platform: {artifact.name}"
+                  )
+
+              for file in artifact.rglob("*.json"):
+                  try:
+                      json.loads(file.read_text(encoding="utf-8-sig"))
+                  except Exception as exc:
+                      raise SystemExit(
+                          f"Invalid JSON: {file}: {exc}"
+                      )
+                  json_count += 1
+
+          print("Fabric Artifact Validation")
+          for kind, count in counts.items():
+              print(f"{kind}: {count}")
+
+          print(f"JSON files validated: {json_count}")
+
+          if counts != expected:
+              raise SystemExit(
+                  f"Artifact count mismatch: {counts}"
+              )
+
+          print("PASS: Fabric CI validation completed.")
