@@ -1,0 +1,83 @@
+
+name: Fabric Deployment Validation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  validate-deployment:
+    name: Validate Fabric deployment permissions
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Azure login using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
+
+      - name: Create, verify, and remove test folder
+        shell: bash
+        env:
+          FABRIC_WORKSPACE_ID: ${{ vars.FABRIC_WORKSPACE_ID }}
+        run: |
+          set -euo pipefail
+
+          test -n "$FABRIC_WORKSPACE_ID"
+
+          TOKEN=$(az account get-access-token \
+            --resource https://api.fabric.microsoft.com \
+            --query accessToken -o tsv)
+
+          BASE="https://api.fabric.microsoft.com/v1/workspaces/$FABRIC_WORKSPACE_ID/folders"
+          FOLDER_ID=""
+
+          cleanup() {
+            if [ -n "$FOLDER_ID" ]; then
+              echo "Removing test folder..."
+              curl --fail-with-body --silent --show-error \
+                --retry 3 \
+                --retry-all-errors \
+                --retry-delay 2 \
+                -X DELETE \
+                -H "Authorization: Bearer $TOKEN" \
+                "$BASE/$FOLDER_ID"
+              echo "Cleanup completed."
+            fi
+          }
+
+          trap cleanup EXIT
+
+          FOLDER_NAME="cicd-validation-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+          echo "Creating deployment test folder..."
+
+          RESPONSE=$(curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            --data "$(jq -nc --arg name "$FOLDER_NAME" \
+              '{displayName:$name}')" \
+            "$BASE")
+
+          FOLDER_ID=$(echo "$RESPONSE" | jq -r '.id // empty')
+
+          test -n "$FOLDER_ID"
+
+          echo "Verifying created folder..."
+
+          VERIFIED=$(curl --fail-with-body --silent --show-error \
+            -H "Authorization: Bearer $TOKEN" \
+            "$BASE/$FOLDER_ID")
+
+          ACTUAL_NAME=$(echo "$VERIFIED" | jq -r '.displayName')
+
+          test "$ACTUAL_NAME" = "$FOLDER_NAME"
+
+          echo "PASS: Fabric deployment write/read validated."
