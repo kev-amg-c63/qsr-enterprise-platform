@@ -1,0 +1,145 @@
+table FactFinancials
+	lineageTag: 43429680-2516-4d85-a7ed-408188ffa953
+	sourceLineageTag: [fact].[FactFinancials]
+
+	column FinancialEntryKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f25371f0-5df7-481b-8d46-f8d133238d73
+		sourceLineageTag: FinancialEntryKey
+		summarizeBy: count
+		sourceColumn: FinancialEntryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column JournalEntryID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 06fa3050-8e4c-465d-b4c8-68c42bfd1126
+		sourceLineageTag: JournalEntryID
+		summarizeBy: none
+		sourceColumn: JournalEntryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column JournalLineNumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6b7a073b-c2b9-4629-942b-9269e9380b12
+		sourceLineageTag: JournalLineNumber
+		summarizeBy: sum
+		sourceColumn: JournalLineNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 0ed0c8a2-98fe-4fad-9754-b056bf74e393
+		sourceLineageTag: DateKey
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ff59bef3-d429-4aee-8345-9a01e9a2ce7a
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column FranchiseKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 40759bf4-a01d-429f-8e21-99522c108630
+		sourceLineageTag: FranchiseKey
+		summarizeBy: count
+		sourceColumn: FranchiseKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 54ab1510-98fe-4a0d-8fa6-88ffce3f01a5
+		sourceLineageTag: AccountKey
+		summarizeBy: none
+		sourceColumn: AccountKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DebitAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 282cd0f3-122d-4d61-93de-a7faa8d2bb9d
+		sourceLineageTag: DebitAmount
+		summarizeBy: sum
+		sourceColumn: DebitAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CreditAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 9fb78091-fa25-4f6b-899c-ccbdd0a9812f
+		sourceLineageTag: CreditAmount
+		summarizeBy: sum
+		sourceColumn: CreditAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CurrencyCode
+		dataType: string
+		sourceProviderType: varchar(3)
+		lineageTag: 310ebd59-02cf-4681-98e6-5be111d2647d
+		sourceLineageTag: CurrencyCode
+		summarizeBy: none
+		sourceColumn: CurrencyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column PostingTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 138d980b-ddb0-48e0-8a4f-f32875a71597
+		sourceLineageTag: PostingTimestamp
+		summarizeBy: none
+		sourceColumn: PostingTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column LoadTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 0f332a8e-880e-4334-8d09-f2367575d916
+		sourceLineageTag: LoadTimestamp
+		summarizeBy: none
+		sourceColumn: LoadTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactFinancials = entity
+		mode: directLake
+		source
+			entityName: FactFinancials
+			schemaName: fact
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

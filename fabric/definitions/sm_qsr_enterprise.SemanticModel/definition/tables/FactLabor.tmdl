@@ -1,0 +1,181 @@
+table FactLabor
+	lineageTag: 88eefe49-9a97-4d8a-8285-905f2886ec92
+	sourceLineageTag: [fact].[FactLabor]
+
+	/// Sum of LaborCost from labor shift records.
+	measure 'Total Labor Cost' = SUM ( FactLabor[LaborCost] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Labor
+		lineageTag: 8d9e2267-aaf9-4978-89d6-76fee92426bc
+
+	/// Sum of RegularHours from labor shift records.
+	measure 'Regular Labor Hours' = SUM ( FactLabor[RegularHours] )
+		formatString: #,0.00
+		displayFolder: Labor
+		lineageTag: 7aa7ab66-6b16-4fbd-b67d-c1d35582a4b9
+
+	/// Sum of OvertimeHours from labor shift records.
+	measure 'Overtime Labor Hours' = SUM ( FactLabor[OvertimeHours] )
+		formatString: #,0.00
+		displayFolder: Labor
+		lineageTag: f5f238bc-59fa-459d-ad19-0acfb147edfc
+
+	/// Regular plus overtime hours.
+	measure 'Total Labor Hours' = [Regular Labor Hours] + [Overtime Labor Hours]
+		formatString: #,0.00
+		displayFolder: Labor
+		lineageTag: f9c2e17e-bd8c-46ca-b528-0244812ecb14
+
+	/// Overtime hours divided by total labor hours.
+	measure 'Overtime %' = DIVIDE ( [Overtime Labor Hours], [Total Labor Hours] )
+		formatString: 0.00%
+		displayFolder: Labor
+		lineageTag: 16669f5d-787c-4912-8c4d-250cc78e774e
+
+	column LaborKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 00eba093-1d9c-4465-95fa-b985f91a4dad
+		sourceLineageTag: LaborKey
+		summarizeBy: count
+		sourceColumn: LaborKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShiftID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 5a38819a-e01f-49f0-8538-30d57504a2ff
+		sourceLineageTag: ShiftID
+		summarizeBy: none
+		sourceColumn: ShiftID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 26fbdb37-792d-4f50-b688-e104fd048bf7
+		sourceLineageTag: DateKey
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b183424f-3c27-48cd-b811-6c056603d853
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a5f9ff34-5243-4373-8ecb-862aee7e1006
+		sourceLineageTag: EmployeeKey
+		summarizeBy: count
+		sourceColumn: EmployeeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShiftStart
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: a0338dc3-8c72-48ba-9599-e1df1e5266ce
+		sourceLineageTag: ShiftStart
+		summarizeBy: none
+		sourceColumn: ShiftStart
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShiftEnd
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 24c515b8-bade-4c3f-a35e-017a729c6d2e
+		sourceLineageTag: ShiftEnd
+		summarizeBy: none
+		sourceColumn: ShiftEnd
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegularHours
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(9, 2)
+		lineageTag: e22a259b-6389-47c0-812c-59f5664090fd
+		sourceLineageTag: RegularHours
+		summarizeBy: sum
+		sourceColumn: RegularHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column OvertimeHours
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(9, 2)
+		lineageTag: feb5384e-45f7-4ff9-a475-c46f1667dee4
+		sourceLineageTag: OvertimeHours
+		summarizeBy: sum
+		sourceColumn: OvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column HourlyRate
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 3618dfd3-3d9a-43ad-8c73-059f393553c1
+		sourceLineageTag: HourlyRate
+		summarizeBy: sum
+		sourceColumn: HourlyRate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column LaborCost
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 01ced293-7ad1-4996-9d7a-8f1bfaae2697
+		sourceLineageTag: LaborCost
+		summarizeBy: sum
+		sourceColumn: LaborCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LoadTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 56db4ddf-4604-4ab7-9b81-553c4fd05b29
+		sourceLineageTag: LoadTimestamp
+		summarizeBy: none
+		sourceColumn: LoadTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactLabor = entity
+		mode: directLake
+		source
+			entityName: FactLabor
+			schemaName: fact
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

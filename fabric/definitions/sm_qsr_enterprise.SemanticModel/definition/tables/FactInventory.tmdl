@@ -1,0 +1,158 @@
+table FactInventory
+	lineageTag: ba8c4e1b-16f4-4cac-8577-33a4b3faa686
+	sourceLineageTag: [fact].[FactInventory]
+
+	/// Latest available snapshot per store and product within the selected filter period; does not sum balances across snapshots or carry balances from before the selected period.
+	measure 'Inventory Value (Latest Snapshot)' = SUMX ( SUMMARIZE ( FactInventory, FactInventory[StoreKey], FactInventory[ProductKey] ), VAR LastSnapshot = CALCULATE ( MAX ( FactInventory[SnapshotTimestamp] ) ) RETURN CALCULATE ( SUM ( FactInventory[InventoryValue] ), KEEPFILTERS ( FactInventory[SnapshotTimestamp] = LastSnapshot ) ) )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Inventory
+		lineageTag: fc5fcfbd-bc0c-49d2-8821-264931ee9de0
+
+	/// Latest available snapshot per store and product within the selected filter period; does not sum balances across snapshots or carry balances from before the selected period.
+	measure 'Quantity On Hand (Latest Snapshot)' = SUMX ( SUMMARIZE ( FactInventory, FactInventory[StoreKey], FactInventory[ProductKey] ), VAR LastSnapshot = CALCULATE ( MAX ( FactInventory[SnapshotTimestamp] ) ) RETURN CALCULATE ( SUM ( FactInventory[QuantityOnHand] ), KEEPFILTERS ( FactInventory[SnapshotTimestamp] = LastSnapshot ) ) )
+		formatString: #,0.00
+		displayFolder: Inventory
+		lineageTag: c6d3625b-bf03-4409-9933-3b08215329af
+
+	/// Latest available snapshot per store and product within the selected filter period; does not sum balances across snapshots or carry balances from before the selected period.
+	measure 'Quantity Reserved (Latest Snapshot)' = SUMX ( SUMMARIZE ( FactInventory, FactInventory[StoreKey], FactInventory[ProductKey] ), VAR LastSnapshot = CALCULATE ( MAX ( FactInventory[SnapshotTimestamp] ) ) RETURN CALCULATE ( SUM ( FactInventory[QuantityReserved] ), KEEPFILTERS ( FactInventory[SnapshotTimestamp] = LastSnapshot ) ) )
+		formatString: #,0.00
+		displayFolder: Inventory
+		lineageTag: a52f3b79-b639-42fe-baae-7f8a2f297405
+
+	column InventoryKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8ccbad1e-7a41-47a9-9548-c982f3cefcee
+		sourceLineageTag: InventoryKey
+		summarizeBy: count
+		sourceColumn: InventoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 483b0fa1-b28b-4817-977e-0d0774fdbba5
+		sourceLineageTag: DateKey
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 33d010cd-0825-41fa-8d52-12fefbdd177a
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d0ebc3e3-bf3b-49fd-9e26-d68a2a20946e
+		sourceLineageTag: ProductKey
+		summarizeBy: count
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SnapshotTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: b906fca4-966e-43c6-b100-ff6888ecdc67
+		sourceLineageTag: SnapshotTimestamp
+		summarizeBy: none
+		sourceColumn: SnapshotTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuantityOnHand
+		dataType: double
+		sourceProviderType: decimal(18, 3)
+		lineageTag: f01055a4-deb8-49b2-9239-5ec6946176fd
+		sourceLineageTag: QuantityOnHand
+		summarizeBy: sum
+		sourceColumn: QuantityOnHand
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column QuantityReserved
+		dataType: double
+		sourceProviderType: decimal(18, 3)
+		lineageTag: 942ce577-5c26-4f1d-a4bc-95c94b6c01ad
+		sourceLineageTag: QuantityReserved
+		summarizeBy: sum
+		sourceColumn: QuantityReserved
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UnitCost
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: eaa12a8d-cc40-43cf-b93c-76b2654db0ad
+		sourceLineageTag: UnitCost
+		summarizeBy: sum
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column InventoryValue
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 74816d30-8375-43b2-bcf1-8be213b3276f
+		sourceLineageTag: InventoryValue
+		summarizeBy: sum
+		sourceColumn: InventoryValue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ReorderPoint
+		dataType: double
+		sourceProviderType: decimal(18, 3)
+		lineageTag: c8a3ed42-7ab7-4e71-bfe6-ee72ce82c7cc
+		sourceLineageTag: ReorderPoint
+		summarizeBy: sum
+		sourceColumn: ReorderPoint
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LoadTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 4bd6fe44-d0b0-4f0b-9ea1-22b90ef2f3f7
+		sourceLineageTag: LoadTimestamp
+		summarizeBy: none
+		sourceColumn: LoadTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactInventory = entity
+		mode: directLake
+		source
+			entityName: FactInventory
+			schemaName: fact
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

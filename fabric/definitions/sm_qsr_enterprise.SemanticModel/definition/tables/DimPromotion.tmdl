@@ -1,0 +1,109 @@
+table DimPromotion
+	lineageTag: 82ea9229-9b93-4e23-b18c-6b1b85898dac
+	sourceLineageTag: [dim].[DimPromotion]
+
+	column PromotionKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: fa2c6fa2-c8c8-4f18-8ec3-6288ad64793f
+		sourceLineageTag: PromotionKey
+		summarizeBy: count
+		sourceColumn: PromotionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionID
+		dataType: string
+		sourceProviderType: varchar(40)
+		lineageTag: f28743ea-4e2d-4cbd-9460-593da3a860aa
+		sourceLineageTag: PromotionID
+		summarizeBy: none
+		sourceColumn: PromotionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: b004e110-3895-4f3a-9375-354bce1785a7
+		sourceLineageTag: PromotionName
+		summarizeBy: none
+		sourceColumn: PromotionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionType
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 5f1d3d35-c04b-4115-a717-52625ea5735b
+		sourceLineageTag: PromotionType
+		summarizeBy: none
+		sourceColumn: PromotionType
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 0524b499-857e-42b5-a91d-b2fd559cc8ee
+		sourceLineageTag: StartDate
+		summarizeBy: none
+		sourceColumn: StartDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 11c02bed-5861-4198-8859-a8ec35e630be
+		sourceLineageTag: EndDate
+		summarizeBy: none
+		sourceColumn: EndDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiscountType
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 1112bc44-b7e3-45e6-93fb-fcc85d2a5276
+		sourceLineageTag: DiscountType
+		summarizeBy: none
+		sourceColumn: DiscountType
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiscountValue
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 4d24b1b2-70d9-4204-b754-ca06edda4666
+		sourceLineageTag: DiscountValue
+		summarizeBy: sum
+		sourceColumn: DiscountValue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 17efef74-d755-46d9-86d9-4cfeb4871892
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimPromotion = entity
+		mode: directLake
+		source
+			entityName: DimPromotion
+			schemaName: dim
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,251 @@
+table FactSales
+	lineageTag: 639ab83a-b125-49e5-80a8-d23e0e61b14c
+	sourceLineageTag: [fact].[FactSales]
+
+	/// Net sales from transaction headers; excludes tax. Product filtering applies to Line Sales instead.
+	measure 'Total Sales' = SUM ( FactSales[NetSales] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Sales
+		lineageTag: 192df5a1-3f59-4c0e-9265-9206a3789e98
+
+	/// Gross sales before discounts from transaction headers.
+	measure 'Gross Sales' = SUM ( FactSales[GrossSales] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Sales
+		lineageTag: 0ace531b-8790-469c-a4f3-9e2691cc51b1
+
+	/// Discount amounts from transaction headers.
+	measure 'Sales Discounts' = SUM ( FactSales[DiscountAmount] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Sales
+		lineageTag: deb952c0-dfcb-4efe-9069-3e70b5bf3ccd
+
+	/// Sum of transaction-header item counts.
+	measure 'Units Sold' = SUM ( FactSales[ItemCount] )
+		formatString: #,0
+		displayFolder: Sales
+		lineageTag: 9b06efef-075a-474a-94ba-2266c19d5518
+
+	/// Distinct transaction surrogate keys; avoids assuming TransactionID is globally unique.
+	measure 'Transaction Count' = DISTINCTCOUNTNOBLANK ( FactSales[SalesKey] )
+		formatString: #,0
+		displayFolder: Sales
+		lineageTag: d7ec90e8-1ecd-41f9-b26c-51bc2af74a0a
+
+	/// Net transaction sales divided by distinct transactions.
+	measure 'Average Ticket' = DIVIDE ( [Total Sales], [Transaction Count] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Sales
+		lineageTag: 39b03eec-a149-4128-a38b-9870cb0d09a9
+
+	/// Calendar year-to-date net sales using the active sales date relationship.
+	measure 'Sales YTD' = CALCULATE ( [Total Sales], REMOVEFILTERS ( DimDate ), DATESYTD ( DimDate[FullDate] ) )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Time Intelligence
+		lineageTag: 8120f7b7-917f-433c-a430-e51d32658446
+
+	/// Net sales for the prior-year corresponding date period; blank if no corresponding data.
+	measure 'Sales LY' = CALCULATE ( [Total Sales], REMOVEFILTERS ( DimDate ), SAMEPERIODLASTYEAR ( DimDate[FullDate] ) )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Time Intelligence
+		lineageTag: 2d766a92-a754-431a-9f77-5051bcf8de04
+
+	/// Change versus the same period last year; blank when prior sales are absent or zero.
+	measure 'YoY Sales Growth %' = VAR PriorSales = [Sales LY] RETURN IF ( NOT ISBLANK ( [Total Sales] ) && NOT ISBLANK ( PriorSales ), DIVIDE ( [Total Sales] - PriorSales, PriorSales ) )
+		formatString: 0.00%
+		displayFolder: Time Intelligence
+		lineageTag: ac51bb26-b2ce-484a-8807-12ebb2e0ca92
+
+	/// Calendar month-to-date net sales using the active sales date relationship.
+	measure 'Sales MTD' = CALCULATE ( [Total Sales], REMOVEFILTERS ( DimDate ), DATESMTD ( DimDate[FullDate] ) )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Time Intelligence
+		lineageTag: 600b9944-b9ba-4547-b906-ae2a774d925e
+
+	column SalesKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: bc1b7fcb-1ced-485e-ad1a-fbe31fca92b6
+		sourceLineageTag: SalesKey
+		summarizeBy: count
+		sourceColumn: SalesKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: b9d624c1-71d0-4e8a-b21c-9fed70a0d9db
+		sourceLineageTag: TransactionID
+		summarizeBy: none
+		sourceColumn: TransactionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: b6609e3e-c69c-43da-b1f0-1bec875250ea
+		sourceLineageTag: DateKey
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: df3491fa-4417-4902-b65d-c01a40d210ca
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 57858a57-5a9e-464d-a9c9-25a4d1260906
+		sourceLineageTag: CustomerKey
+		summarizeBy: count
+		sourceColumn: CustomerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f8c26d2a-831a-453d-af20-20d5b863bcc4
+		sourceLineageTag: PromotionKey
+		summarizeBy: count
+		sourceColumn: PromotionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 26e33a87-1352-4bd6-9965-f579d5960c12
+		sourceLineageTag: TransactionTimestamp
+		summarizeBy: none
+		sourceColumn: TransactionTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column GrossSales
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 38f19195-791d-487b-b422-4f966724defd
+		sourceLineageTag: GrossSales
+		summarizeBy: sum
+		sourceColumn: GrossSales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DiscountAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 4dcb3933-78cc-477d-9a74-837869280e88
+		sourceLineageTag: DiscountAmount
+		summarizeBy: sum
+		sourceColumn: DiscountAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NetSales
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 4298ef40-1942-4ea1-aebc-c05438cd8a46
+		sourceLineageTag: NetSales
+		summarizeBy: sum
+		sourceColumn: NetSales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TaxAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 8d6f4289-08c6-4606-9b31-dd0e5d24469c
+		sourceLineageTag: TaxAmount
+		summarizeBy: sum
+		sourceColumn: TaxAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 10d3b813-4d91-49dc-8e54-aa9585a28e14
+		sourceLineageTag: TotalAmount
+		summarizeBy: sum
+		sourceColumn: TotalAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ItemCount
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 8a53db1e-a6fb-4157-9b6c-6866d7823db3
+		sourceLineageTag: ItemCount
+		summarizeBy: sum
+		sourceColumn: ItemCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column PaymentMethod
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 8e003d1d-5787-4c3b-bd56-a8f6ce399f01
+		sourceLineageTag: PaymentMethod
+		summarizeBy: none
+		sourceColumn: PaymentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesChannel
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 020a4cae-7cbd-4480-86ab-725b1d4ce328
+		sourceLineageTag: SalesChannel
+		summarizeBy: none
+		sourceColumn: SalesChannel
+
+		annotation SummarizationSetBy = Automatic
+
+	column LoadTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 890b3733-27a7-4e2e-b15b-18b1a27cfbd7
+		sourceLineageTag: LoadTimestamp
+		summarizeBy: none
+		sourceColumn: LoadTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactSales = entity
+		mode: directLake
+		source
+			entityName: FactSales
+			schemaName: fact
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

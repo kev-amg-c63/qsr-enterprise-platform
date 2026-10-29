@@ -1,0 +1,193 @@
+table FactMarketing
+	lineageTag: 50726ed8-d1e3-4a54-8c48-80bbc68cbde0
+	sourceLineageTag: [fact].[FactMarketing]
+
+	/// Sum of reported marketing SpendAmount.
+	measure 'Marketing Spend' = SUM ( FactMarketing[SpendAmount] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Marketing
+		lineageTag: 857ccbdd-67c9-490c-90b9-f207b187abde
+
+	/// Sum of reported marketing AttributedRevenue.
+	measure 'Attributed Revenue' = SUM ( FactMarketing[AttributedRevenue] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Marketing
+		lineageTag: 6496549c-4a36-420d-b9e7-a41607ee8498
+
+	/// Sum of reported marketing Impressions.
+	measure 'Total Impressions' = SUM ( FactMarketing[Impressions] )
+		formatString: #,0
+		displayFolder: Marketing
+		lineageTag: bcd07c2d-a7bc-4cdb-89db-7883e4645bbc
+
+	/// Sum of reported marketing Clicks.
+	measure 'Total Clicks' = SUM ( FactMarketing[Clicks] )
+		formatString: #,0
+		displayFolder: Marketing
+		lineageTag: e3a5295c-c681-4a28-b26d-1774dd6b5806
+
+	/// Sum of reported marketing Conversions.
+	measure 'Total Conversions' = SUM ( FactMarketing[Conversions] )
+		formatString: #,0
+		displayFolder: Marketing
+		lineageTag: f7ab7ca2-8d0e-4805-bee3-b8e4e12a382b
+
+	/// Clicks divided by impressions.
+	measure 'Click-Through Rate %' = DIVIDE ( [Total Clicks], [Total Impressions] )
+		formatString: 0.00%
+		displayFolder: Marketing
+		lineageTag: 4bfbcbf0-31c9-4998-aa13-d343fe3b6f1b
+
+	/// Reported conversions divided by clicks.
+	measure 'Conversion Rate %' = DIVIDE ( [Total Conversions], [Total Clicks] )
+		formatString: 0.00%
+		displayFolder: Marketing
+		lineageTag: bd369b76-f090-4742-aa56-c11e7755f602
+
+	/// Attributed revenue divided by marketing spend; revenue multiple, not profit ROI.
+	measure 'Return on Ad Spend' = DIVIDE ( [Attributed Revenue], [Marketing Spend] )
+		formatString: 0.00"x"
+		displayFolder: Marketing
+		lineageTag: aae4c60c-0b59-437e-a582-6c837a7b6fd9
+
+	column MarketingKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 95b1e491-afb9-4c98-ac92-3374c6226447
+		sourceLineageTag: MarketingKey
+		summarizeBy: count
+		sourceColumn: MarketingKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CampaignID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 047c4edf-32ba-4cad-aad1-ec513e5041a7
+		sourceLineageTag: CampaignID
+		summarizeBy: none
+		sourceColumn: CampaignID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f8173dda-0884-4f27-8fdc-f3975c301b86
+		sourceLineageTag: DateKey
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 08677df0-fb7c-43ae-8e05-f23fe98eccf5
+		sourceLineageTag: PromotionKey
+		summarizeBy: count
+		sourceColumn: PromotionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: dc1e7cdd-7c0b-4e96-9d70-8f4ad1a1b311
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channel
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 2c394cb6-c8a9-4701-a62b-39ee8fc0c067
+		sourceLineageTag: Channel
+		summarizeBy: none
+		sourceColumn: Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Impressions
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: cee09135-2063-437a-afdb-3345f714273f
+		sourceLineageTag: Impressions
+		summarizeBy: sum
+		sourceColumn: Impressions
+
+		annotation SummarizationSetBy = Automatic
+
+	column Clicks
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: ed3e4c79-84e8-4b6a-9a8c-7c01d8cc1c0e
+		sourceLineageTag: Clicks
+		summarizeBy: sum
+		sourceColumn: Clicks
+
+		annotation SummarizationSetBy = Automatic
+
+	column Conversions
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 3a316031-3ea5-4f2a-9f47-dab1cb42d2e0
+		sourceLineageTag: Conversions
+		summarizeBy: sum
+		sourceColumn: Conversions
+
+		annotation SummarizationSetBy = Automatic
+
+	column SpendAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 143beefc-f170-4fc7-9322-b678afd63480
+		sourceLineageTag: SpendAmount
+		summarizeBy: sum
+		sourceColumn: SpendAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AttributedRevenue
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 8d98de89-96b9-496a-95ba-6636500c826b
+		sourceLineageTag: AttributedRevenue
+		summarizeBy: sum
+		sourceColumn: AttributedRevenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LoadTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: cc599dc5-d05f-4dbf-a822-8f83a9d556f5
+		sourceLineageTag: LoadTimestamp
+		summarizeBy: none
+		sourceColumn: LoadTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactMarketing = entity
+		mode: directLake
+		source
+			entityName: FactMarketing
+			schemaName: fact
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

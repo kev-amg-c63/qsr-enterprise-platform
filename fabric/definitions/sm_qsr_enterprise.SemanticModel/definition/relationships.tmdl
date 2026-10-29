@@ -1,0 +1,118 @@
+relationship 1f3088fc-334e-1443-3113-1e6992801a8c
+	fromColumn: FactFinancials.AccountKey
+	toColumn: DimAccount.AccountKey
+
+relationship 46f6ec83-bb58-518d-b03d-7bd69839523c
+	fromColumn: FactFinancials.DateKey
+	toColumn: DimDate.DateKey
+
+relationship 3c5dd130-4cf3-5a75-a152-114ceecb8f0d
+	fromColumn: FactFinancials.StoreKey
+	toColumn: DimStore.StoreKey
+
+relationship e5036864-3e1a-5313-9250-1710ff9c369c
+	fromColumn: FactFinancials.FranchiseKey
+	toColumn: DimFranchise.FranchiseKey
+
+relationship 08723137-6d99-55f8-a379-9e5e23a27851
+	fromColumn: FactInventory.DateKey
+	toColumn: DimDate.DateKey
+
+relationship 0519c938-c34d-5433-b49d-18c2a17ff11a
+	fromColumn: FactInventory.StoreKey
+	toColumn: DimStore.StoreKey
+
+relationship 53ae23fc-ce11-5eed-9433-35a88ed29485
+	fromColumn: FactInventory.ProductKey
+	toColumn: DimProduct.ProductKey
+
+relationship e6d1a910-22f1-523e-955b-c35e3131ee1c
+	fromColumn: FactLabor.DateKey
+	toColumn: DimDate.DateKey
+
+relationship 22aec948-1e8d-5019-80ce-5c13413db9f0
+	fromColumn: FactLabor.StoreKey
+	toColumn: DimStore.StoreKey
+
+relationship 1be9551b-b495-56f4-ae18-17e2f8ebe17b
+	fromColumn: FactLabor.EmployeeKey
+	toColumn: DimEmployee.EmployeeKey
+
+relationship 10548428-cc0e-5fc3-b0d7-6573a51e44f6
+	fromColumn: FactMarketing.DateKey
+	toColumn: DimDate.DateKey
+
+relationship d482b9f8-356f-52fd-afb9-daecd502ee9f
+	fromColumn: FactMarketing.PromotionKey
+	toColumn: DimPromotion.PromotionKey
+
+relationship 79cbc275-4226-51e5-9612-c7108a5c4d6d
+	fromColumn: FactMarketing.StoreKey
+	toColumn: DimStore.StoreKey
+
+relationship 9c4a4e2a-86a1-5107-ac6f-9be9ff1051be
+	fromColumn: FactPurchaseOrders.OrderDateKey
+	toColumn: DimDate.DateKey
+
+relationship 49706789-9593-5fe0-a8e3-1d0ae5616476
+	isActive: false
+	fromColumn: FactPurchaseOrders.ExpectedDateKey
+	toColumn: DimDate.DateKey
+
+relationship 47562a83-82b0-5ef1-947c-e9f973667055
+	isActive: false
+	fromColumn: FactPurchaseOrders.ReceivedDateKey
+	toColumn: DimDate.DateKey
+
+relationship c28a2c35-94e2-5c49-a332-073bdb2c6f80
+	fromColumn: FactPurchaseOrders.StoreKey
+	toColumn: DimStore.StoreKey
+
+relationship e42544d1-3f02-5f3a-a8e1-a680a082c19c
+	fromColumn: FactPurchaseOrders.SupplierKey
+	toColumn: DimSupplier.SupplierKey
+
+relationship db61450b-a1ba-5e8d-b608-1371b9556216
+	fromColumn: FactPurchaseOrders.ProductKey
+	toColumn: DimProduct.ProductKey
+
+relationship 3e2f375d-18be-543f-9e7e-80585eaef0d8
+	fromColumn: FactSales.DateKey
+	toColumn: DimDate.DateKey
+
+relationship a441684c-0840-52ef-bed3-c1428d18f939
+	fromColumn: FactSales.StoreKey
+	toColumn: DimStore.StoreKey
+
+relationship 4797f236-04f2-54b2-a8e1-f3d337b090b7
+	fromColumn: FactSales.CustomerKey
+	toColumn: DimCustomer.CustomerKey
+
+relationship 5851470d-b80b-512f-8cbb-e109ccf1002a
+	fromColumn: FactSales.PromotionKey
+	toColumn: DimPromotion.PromotionKey
+
+relationship 5c439c16-fef3-5207-88e1-ae869998c771
+	fromColumn: FactSalesLine.DateKey
+	toColumn: DimDate.DateKey
+
+relationship 67b38397-4673-54f4-b0da-9980df8cdc9a
+	fromColumn: FactSalesLine.StoreKey
+	toColumn: DimStore.StoreKey
+
+relationship d1f31ec0-3437-5dfe-affe-ffa69a4aeb8b
+	fromColumn: FactSalesLine.ProductKey
+	toColumn: DimProduct.ProductKey
+
+relationship 38080b0a-0288-5fe4-9970-fb63466fb1ac
+	fromColumn: FactSalesLine.PromotionKey
+	toColumn: DimPromotion.PromotionKey
+
+relationship c60730a8-4238-58df-9881-297844cf20f7
+	fromColumn: FactStorePerformance.DateKey
+	toColumn: DimDate.DateKey
+
+relationship 9358ffcb-0284-5cfa-b3b2-c439c64ee0e7
+	fromColumn: FactStorePerformance.StoreKey
+	toColumn: DimStore.StoreKey
+

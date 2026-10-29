@@ -1,0 +1,75 @@
+table DimAccount
+	lineageTag: 252ff820-8c7b-43f0-a793-442f67709a6b
+	sourceLineageTag: [dim].[DimAccount]
+
+	column AccountKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 82212afd-7694-4790-992d-276a03a3b8d9
+		sourceLineageTag: AccountKey
+		summarizeBy: none
+		sourceColumn: AccountKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountCode
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 31a9257d-7ed7-45db-904e-b034da201b37
+		sourceLineageTag: AccountCode
+		summarizeBy: none
+		sourceColumn: AccountCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: e14f8f92-d6fa-4468-9625-c2c705bdc491
+		sourceLineageTag: AccountName
+		summarizeBy: none
+		sourceColumn: AccountName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountType
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: a5658716-7bec-44a9-96a3-e4499e4378ef
+		sourceLineageTag: AccountType
+		summarizeBy: none
+		sourceColumn: AccountType
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountCategory
+		dataType: string
+		sourceProviderType: varchar(80)
+		lineageTag: 689749e0-ce8d-4068-b2b7-53ad6e0acae3
+		sourceLineageTag: AccountCategory
+		summarizeBy: none
+		sourceColumn: AccountCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: f712d6f4-9b08-4d20-8ed8-0e1bd46b2d93
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimAccount = entity
+		mode: directLake
+		source
+			entityName: DimAccount
+			schemaName: dim
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

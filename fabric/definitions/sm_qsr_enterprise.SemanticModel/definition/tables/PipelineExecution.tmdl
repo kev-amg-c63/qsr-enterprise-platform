@@ -1,0 +1,129 @@
+table PipelineExecution
+	lineageTag: 7a87d00f-b355-4f6d-b9e2-6e20c2e09c7e
+	sourceLineageTag: [audit].[PipelineExecution]
+
+	column PipelineExecutionKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a8065fb7-ba59-4615-b598-2ce4c471cc17
+		sourceLineageTag: PipelineExecutionKey
+		summarizeBy: count
+		sourceColumn: PipelineExecutionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PipelineName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: c4110a45-dbe6-448b-ae41-6918818e0a20
+		sourceLineageTag: PipelineName
+		summarizeBy: none
+		sourceColumn: PipelineName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RunID
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: d8bb6d74-eaa8-44ec-9ad7-25f91f751595
+		sourceLineageTag: RunID
+		summarizeBy: none
+		sourceColumn: RunID
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 7bb9b63e-be5e-49fd-b058-188fc8197128
+		sourceLineageTag: StartTimestamp
+		summarizeBy: none
+		sourceColumn: StartTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: ee352661-0709-4d8f-9173-3aec3bb33266
+		sourceLineageTag: EndTimestamp
+		summarizeBy: none
+		sourceColumn: EndTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExecutionStatus
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 958a7c9a-2469-4106-9561-2dd926aadd69
+		sourceLineageTag: ExecutionStatus
+		summarizeBy: none
+		sourceColumn: ExecutionStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceSystem
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: ac740898-8ddc-4926-899d-ec88148869d7
+		sourceLineageTag: SourceSystem
+		summarizeBy: none
+		sourceColumn: SourceSystem
+
+		annotation SummarizationSetBy = Automatic
+
+	column RowsRead
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d9813dbe-4010-4810-9678-9bcd9af8db6a
+		sourceLineageTag: RowsRead
+		summarizeBy: sum
+		sourceColumn: RowsRead
+
+		annotation SummarizationSetBy = Automatic
+
+	column RowsWritten
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 6f39ed01-318f-49ae-b72b-4754bb50ce1f
+		sourceLineageTag: RowsWritten
+		summarizeBy: sum
+		sourceColumn: RowsWritten
+
+		annotation SummarizationSetBy = Automatic
+
+	column RowsRejected
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 308b887d-733b-474e-b472-b6b3a46d4416
+		sourceLineageTag: RowsRejected
+		summarizeBy: sum
+		sourceColumn: RowsRejected
+
+		annotation SummarizationSetBy = Automatic
+
+	column ErrorMessage
+		dataType: string
+		sourceProviderType: varchar(4000)
+		lineageTag: 3525fdc4-ef4d-43c2-98dc-4dd72a9b6d05
+		sourceLineageTag: ErrorMessage
+		summarizeBy: none
+		sourceColumn: ErrorMessage
+
+		annotation SummarizationSetBy = Automatic
+
+	partition PipelineExecution = entity
+		mode: directLake
+		source
+			entityName: PipelineExecution
+			schemaName: audit
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

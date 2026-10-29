@@ -1,0 +1,130 @@
+table DimEmployee
+	lineageTag: 12849416-89a3-43a0-8483-0c4b93780d1b
+	sourceLineageTag: [dim].[DimEmployee]
+
+	column EmployeeKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0190f1b7-b92f-4fab-945b-b81bc2f86f36
+		sourceLineageTag: EmployeeKey
+		summarizeBy: count
+		sourceColumn: EmployeeKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 9d7fe708-ff06-4ac5-bcd7-50033df41b46
+		sourceLineageTag: EmployeeID
+		summarizeBy: none
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreID
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 1e2acb40-0d93-4241-aebf-c5ddc0868d04
+		sourceLineageTag: StoreID
+		summarizeBy: none
+		sourceColumn: StoreID
+
+		annotation SummarizationSetBy = Automatic
+
+	column JobTitle
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 56ce4a3d-6463-451f-aded-6ce6e7eb9d24
+		sourceLineageTag: JobTitle
+		summarizeBy: none
+		sourceColumn: JobTitle
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmploymentType
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: da885df6-718e-4c30-aa27-6c8704ba4374
+		sourceLineageTag: EmploymentType
+		summarizeBy: none
+		sourceColumn: EmploymentType
+
+		annotation SummarizationSetBy = Automatic
+
+	column HireDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: d9cb562b-7231-47d8-91a9-e6d51e2c99bd
+		sourceLineageTag: HireDate
+		summarizeBy: none
+		sourceColumn: HireDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerminationDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 119d5a22-300b-4ebe-b7cb-15b6b2d661c0
+		sourceLineageTag: TerminationDate
+		summarizeBy: none
+		sourceColumn: TerminationDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 94bfa4c7-4ba8-4269-bbda-8630baf6a604
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column EffectiveStartDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: b777dfd9-9d6c-446c-89f0-817024cfcf80
+		sourceLineageTag: EffectiveStartDate
+		summarizeBy: none
+		sourceColumn: EffectiveStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EffectiveEndDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: bbe63545-7f83-4b34-bd92-1ad0fb258ab0
+		sourceLineageTag: EffectiveEndDate
+		summarizeBy: none
+		sourceColumn: EffectiveEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: ff9ff354-bce3-4d97-87fe-e3d5dd4b324f
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimEmployee = entity
+		mode: directLake
+		source
+			entityName: DimEmployee
+			schemaName: dim
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

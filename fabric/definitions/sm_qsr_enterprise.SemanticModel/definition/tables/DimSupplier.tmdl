@@ -1,0 +1,108 @@
+table DimSupplier
+	lineageTag: fa1dac28-16ad-45a3-90a3-ed6cd06a4e23
+	sourceLineageTag: [dim].[DimSupplier]
+
+	column SupplierKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 01268771-d92f-4c9d-979f-fdd10d65aa11
+		sourceLineageTag: SupplierKey
+		summarizeBy: count
+		sourceColumn: SupplierKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierID
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: c53cbb86-2414-44f9-8941-e8b799cce34e
+		sourceLineageTag: SupplierID
+		summarizeBy: none
+		sourceColumn: SupplierID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: f800866e-6b4b-4172-960f-af6462cd4220
+		sourceLineageTag: SupplierName
+		summarizeBy: none
+		sourceColumn: SupplierName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierCategory
+		dataType: string
+		sourceProviderType: varchar(80)
+		lineageTag: ea1ec914-c78f-4b16-b817-8c228b5e3fe7
+		sourceLineageTag: SupplierCategory
+		summarizeBy: none
+		sourceColumn: SupplierCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		sourceProviderType: varchar(2)
+		lineageTag: 38286482-a41f-4193-b77e-c9c840bdd151
+		sourceLineageTag: StateCode
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: b08a38dc-7086-431a-af83-6c9d4cc3aa8c
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column EffectiveStartDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 77e9e27a-4343-42ec-a805-19b11644b777
+		sourceLineageTag: EffectiveStartDate
+		summarizeBy: none
+		sourceColumn: EffectiveStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EffectiveEndDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 19b8f5b1-2a52-41aa-b900-864af9bd8d0d
+		sourceLineageTag: EffectiveEndDate
+		summarizeBy: none
+		sourceColumn: EffectiveEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 52e3d72f-f311-41ca-9a32-6b48a5fe9bd9
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimSupplier = entity
+		mode: directLake
+		source
+			entityName: DimSupplier
+			schemaName: dim
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,108 @@
+table DataQualityResults
+	lineageTag: 294270d7-1e3d-47ac-bdb7-c7346dda451e
+	sourceLineageTag: [audit].[DataQualityResults]
+
+	column DataQualityResultKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8f02d5d0-3347-45ad-b4b9-31b5f8f64088
+		sourceLineageTag: DataQualityResultKey
+		summarizeBy: count
+		sourceColumn: DataQualityResultKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PipelineExecutionKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: dd2e8611-0ac9-4492-8665-55a02323292c
+		sourceLineageTag: PipelineExecutionKey
+		summarizeBy: count
+		sourceColumn: PipelineExecutionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DatasetName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 525fe728-fcb6-4e5f-95ca-8efd21bdc1f0
+		sourceLineageTag: DatasetName
+		summarizeBy: none
+		sourceColumn: DatasetName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RuleName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: bf5e7695-147c-47fc-8f29-7bce5eb1dc80
+		sourceLineageTag: RuleName
+		summarizeBy: none
+		sourceColumn: RuleName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CheckTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: e0c178f2-4b26-47fa-9035-c3c36ac97ea8
+		sourceLineageTag: CheckTimestamp
+		summarizeBy: none
+		sourceColumn: CheckTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column RowsChecked
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: cf9074a1-cb96-43a4-be0a-74aecdb49713
+		sourceLineageTag: RowsChecked
+		summarizeBy: sum
+		sourceColumn: RowsChecked
+
+		annotation SummarizationSetBy = Automatic
+
+	column RowsFailed
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0cd544fa-5061-4e35-a617-fa71c7564feb
+		sourceLineageTag: RowsFailed
+		summarizeBy: sum
+		sourceColumn: RowsFailed
+
+		annotation SummarizationSetBy = Automatic
+
+	column ResultStatus
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 4de37137-b248-4185-a2eb-796fe0b409bb
+		sourceLineageTag: ResultStatus
+		summarizeBy: none
+		sourceColumn: ResultStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Details
+		dataType: string
+		sourceProviderType: varchar(4000)
+		lineageTag: 9e0960d5-7cec-4b09-9a75-2463a0b5b4f2
+		sourceLineageTag: Details
+		summarizeBy: none
+		sourceColumn: Details
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DataQualityResults = entity
+		mode: directLake
+		source
+			entityName: DataQualityResults
+			schemaName: audit
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

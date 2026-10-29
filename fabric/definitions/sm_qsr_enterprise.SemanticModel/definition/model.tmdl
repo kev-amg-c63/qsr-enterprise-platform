@@ -1,0 +1,37 @@
+model Model
+	culture: en-US
+	collation: Latin1_General_100_BIN2_UTF8
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DatabaseQuery"]
+
+annotation PBI_ProTooling = ["WebModelingEdit","DaxQueryView_Desktop","TMDLView_Desktop"]
+
+ref table FactSales
+ref table FactSalesLine
+ref table FactStorePerformance
+ref table DataQualityResults
+ref table DataReconciliation
+ref table PipelineExecution
+ref table SchemaVersionHistory
+ref table DimAccount
+ref table DimCustomer
+ref table DimDate
+ref table DimEmployee
+ref table DimFranchise
+ref table DimProduct
+ref table DimPromotion
+ref table DimStore
+ref table DimSupplier
+ref table FactFinancials
+ref table FactInventory
+ref table FactLabor
+ref table FactMarketing
+ref table FactPurchaseOrders
+

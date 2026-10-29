@@ -1,0 +1,214 @@
+table FactStorePerformance
+	lineageTag: d070e24a-583e-419a-951b-61eff26beff1
+	sourceLineageTag: [fact].[FactStorePerformance]
+
+	/// Reported store food cost; not asserted to be complete cost of goods sold.
+	measure 'Total Food Cost' = SUM ( FactStorePerformance[FoodCost] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Profitability
+		lineageTag: aed16b26-4217-4a7f-8880-d6d9391c9bd2
+
+	/// Reported waste cost; may overlap food cost and is not added to it.
+	measure 'Total Waste Cost' = SUM ( FactStorePerformance[WasteCost] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Profitability
+		lineageTag: e07a6789-8a5e-4379-bfce-8d0ee8284601
+
+	/// Food cost as a share of net sales from the same store-performance fact.
+	measure 'Food Cost %' = DIVIDE ( [Total Food Cost], [Store Net Sales] )
+		formatString: 0.00%
+		displayFolder: Profitability
+		lineageTag: bd78150c-7fdd-4ec0-af3d-e1dac4110cd5
+
+	/// Labor cost divided by net sales at the same store-performance grain.
+	measure 'Labor %' = DIVIDE ( [Store Labor Cost], [Store Net Sales] )
+		formatString: 0.00%
+		displayFolder: Labor
+		lineageTag: 3c0cfbfe-827d-4bf9-8a2f-89f1d07d343f
+
+	/// Sum of reported NetSales from store-performance records; do not add to equivalent transaction or shift measures.
+	measure 'Store Net Sales' = SUM ( FactStorePerformance[NetSales] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Store Performance
+		lineageTag: e68d5a49-5e76-486e-a52f-b89451b37197
+
+	/// Sum of reported TransactionCount from store-performance records; do not add to equivalent transaction or shift measures.
+	measure 'Store Transactions' = SUM ( FactStorePerformance[TransactionCount] )
+		formatString: #,0
+		displayFolder: Store Performance
+		lineageTag: ef8fada2-68c1-427f-a5ea-1733a3b245ed
+
+	/// Sum of reported LaborCost from store-performance records; do not add to equivalent transaction or shift measures.
+	measure 'Store Labor Cost' = SUM ( FactStorePerformance[LaborCost] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Store Performance
+		lineageTag: 1ccdf4b8-d59f-4d87-a683-2c2f515179f6
+
+	/// Sum of reported LaborHours from store-performance records; do not add to equivalent transaction or shift measures.
+	measure 'Store Labor Hours' = SUM ( FactStorePerformance[LaborHours] )
+		formatString: #,0.00
+		displayFolder: Store Performance
+		lineageTag: e575e48f-6603-43a3-9219-a3406e1e10de
+
+	/// Net sales per labor hour from the same store-performance fact.
+	measure 'Sales per Labor Hour' = DIVIDE ( [Store Net Sales], [Store Labor Hours] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Store Performance
+		lineageTag: 50e7f83b-955d-4d61-bb5d-bd222aa87d71
+
+	measure 'Gross Profit' = [Total Sales] - [Total Food Cost]
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Profitability
+		lineageTag: ba0a7bbe-1a10-4a65-8656-82353d6eb361
+
+	measure 'Gross Margin %' = DIVIDE ( [Total Sales] - [Total Food Cost], [Total Sales] )
+		formatString: 0.00%
+		displayFolder: Profitability
+		lineageTag: 7abcab04-4815-4052-96e0-3ac7e3f5c61f
+
+	measure 'Operating Profit' = [Total Sales] - [Total Food Cost] - [Total Labor Cost]
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Profitability
+		lineageTag: 28ef3587-ecbc-40d3-8991-b18deeddb581
+
+	measure 'Operating Margin %' = DIVIDE ( [Total Sales] - [Total Food Cost] - [Total Labor Cost], [Total Sales] )
+		formatString: 0.00%
+		displayFolder: Profitability
+		lineageTag: 0e096653-23b0-45bc-a043-76a9c24393db
+
+	column StorePerformanceKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: b844a556-9649-42c2-98d9-a217c077f321
+		sourceLineageTag: StorePerformanceKey
+		summarizeBy: count
+		sourceColumn: StorePerformanceKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 0ec96ede-3bd3-43d2-9f19-0c23156912b3
+		sourceLineageTag: DateKey
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f6a93e40-61fa-4a5a-a9c1-b178261f695b
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionCount
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 19d5d4d0-6631-4758-8805-b04d9cfe9347
+		sourceLineageTag: TransactionCount
+		summarizeBy: sum
+		sourceColumn: TransactionCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitsSold
+		dataType: double
+		sourceProviderType: decimal(18, 3)
+		lineageTag: d365e4fb-7618-4ab4-9500-94714bced258
+		sourceLineageTag: UnitsSold
+		summarizeBy: sum
+		sourceColumn: UnitsSold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NetSales
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: e925e8e4-1cc4-4152-a01e-3e2a9a2ed8c2
+		sourceLineageTag: NetSales
+		summarizeBy: sum
+		sourceColumn: NetSales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LaborHours
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: e72940aa-5d33-427a-86a4-f4db2d573809
+		sourceLineageTag: LaborHours
+		summarizeBy: sum
+		sourceColumn: LaborHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LaborCost
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 5e4bf6bf-f73c-4e34-ae40-813faaa05246
+		sourceLineageTag: LaborCost
+		summarizeBy: sum
+		sourceColumn: LaborCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FoodCost
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 4e52c01a-4b2e-454e-888f-612fd5c68dfd
+		sourceLineageTag: FoodCost
+		summarizeBy: sum
+		sourceColumn: FoodCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WasteCost
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: ea3d6562-ab4a-4403-a39d-264516be0245
+		sourceLineageTag: WasteCost
+		summarizeBy: sum
+		sourceColumn: WasteCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LoadTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 9df71b27-674e-4ca9-8799-a0e80d10cf57
+		sourceLineageTag: LoadTimestamp
+		summarizeBy: none
+		sourceColumn: LoadTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactStorePerformance = entity
+		mode: directLake
+		source
+			entityName: FactStorePerformance
+			schemaName: fact
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,211 @@
+table FactPurchaseOrders
+	lineageTag: e98de27a-2028-4614-a881-30b6079ec4f8
+	sourceLineageTag: [fact].[FactPurchaseOrders]
+
+	/// Distinct nonblank purchase order identifiers.
+	measure 'Purchase Order Count' = DISTINCTCOUNTNOBLANK ( FactPurchaseOrders[PurchaseOrderID] )
+		formatString: #,0
+		displayFolder: Purchasing
+		lineageTag: 15a62ed7-687f-4722-8835-6760416c250e
+
+	/// Sum of ExtendedCost at purchase order line grain, filtered by active order date.
+	measure 'Purchase Order Value' = SUM ( FactPurchaseOrders[ExtendedCost] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Purchasing
+		lineageTag: 54b15811-849b-4ef3-bc75-f74d8a7f2666
+
+	/// Sum of OrderedQuantity at purchase order line grain, filtered by active order date.
+	measure 'Ordered Quantity' = SUM ( FactPurchaseOrders[OrderedQuantity] )
+		formatString: #,0.00
+		displayFolder: Purchasing
+		lineageTag: 6318c858-187f-4729-94a5-d0484eee2589
+
+	/// Sum of ReceivedQuantity at purchase order line grain, filtered by active order date.
+	measure 'Received Quantity' = SUM ( FactPurchaseOrders[ReceivedQuantity] )
+		formatString: #,0.00
+		displayFolder: Purchasing
+		lineageTag: 5d5f0548-1a6c-4661-93e4-84b04f501117
+
+	/// Received quantity divided by ordered quantity; not an on-time delivery metric.
+	measure 'Receipt Fulfillment %' = DIVIDE ( [Received Quantity], [Ordered Quantity] )
+		formatString: 0.00%
+		displayFolder: Purchasing
+		lineageTag: 6f7b869c-f68a-4b67-b1ad-725663e62eab
+
+	column PurchaseOrderLineKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: bbb3e493-1cd5-4bd2-ab57-f11e9f538d2d
+		sourceLineageTag: PurchaseOrderLineKey
+		summarizeBy: count
+		sourceColumn: PurchaseOrderLineKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PurchaseOrderID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 128da81f-4512-4527-a7ff-52d9f5261280
+		sourceLineageTag: PurchaseOrderID
+		summarizeBy: none
+		sourceColumn: PurchaseOrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column LineNumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 97dabd8c-41dc-418c-ac92-74f4f5e84c82
+		sourceLineageTag: LineNumber
+		summarizeBy: sum
+		sourceColumn: LineNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: fb660326-0a8f-450e-b7f3-a38856cdb9b6
+		sourceLineageTag: OrderDateKey
+		summarizeBy: count
+		sourceColumn: OrderDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ExpectedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 68b6a0f7-0ff1-4130-bf49-3a1e74bfc6d5
+		sourceLineageTag: ExpectedDateKey
+		summarizeBy: count
+		sourceColumn: ExpectedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReceivedDateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a20da1a4-fcbf-47b4-83e8-ec98d4311ffc
+		sourceLineageTag: ReceivedDateKey
+		summarizeBy: count
+		sourceColumn: ReceivedDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: f4f2719c-51af-4466-9dbf-ba40ed3b7168
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SupplierKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: df4a2ee8-2c7f-4e80-89ca-e37e32d78126
+		sourceLineageTag: SupplierKey
+		summarizeBy: count
+		sourceColumn: SupplierKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 407ca453-71bb-4c64-a281-ee40c99f8b7f
+		sourceLineageTag: ProductKey
+		summarizeBy: count
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderedQuantity
+		dataType: double
+		sourceProviderType: decimal(18, 3)
+		lineageTag: 5d3a4421-5870-4615-b9a0-d51b6d793a3c
+		sourceLineageTag: OrderedQuantity
+		summarizeBy: sum
+		sourceColumn: OrderedQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ReceivedQuantity
+		dataType: double
+		sourceProviderType: decimal(18, 3)
+		lineageTag: 91f16e11-7f87-478f-883b-9dfeb46d304d
+		sourceLineageTag: ReceivedQuantity
+		summarizeBy: sum
+		sourceColumn: ReceivedQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UnitCost
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		sourceProviderType: decimal(18, 4)
+		lineageTag: 21d033fc-f3bc-423f-bc62-95ef4a89a245
+		sourceLineageTag: UnitCost
+		summarizeBy: sum
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column ExtendedCost
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: f2404b43-89e5-4cc5-9df3-ec43254f1c59
+		sourceLineageTag: ExtendedCost
+		summarizeBy: sum
+		sourceColumn: ExtendedCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderStatus
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 66bc54b3-a32c-4222-89de-b24d77883cab
+		sourceLineageTag: OrderStatus
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column LoadTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: d25a1ae9-3fe3-4685-aeaa-da086e7e8c41
+		sourceLineageTag: LoadTimestamp
+		summarizeBy: none
+		sourceColumn: LoadTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactPurchaseOrders = entity
+		mode: directLake
+		source
+			entityName: FactPurchaseOrders
+			schemaName: fact
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,95 @@
+table SchemaVersionHistory
+	lineageTag: 03eb0997-5cdd-4a3d-8071-390fe123efdd
+	sourceLineageTag: [audit].[SchemaVersionHistory]
+
+	column SchemaVersionKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: e6183dfd-c537-43c2-872e-0a4f49284641
+		sourceLineageTag: SchemaVersionKey
+		summarizeBy: count
+		sourceColumn: SchemaVersionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SchemaName
+		dataType: string
+		sourceProviderType: varchar(128)
+		lineageTag: dec1bd23-4db0-4a71-a648-ad6c03efb60b
+		sourceLineageTag: SchemaName
+		summarizeBy: none
+		sourceColumn: SchemaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObjectName
+		dataType: string
+		sourceProviderType: varchar(128)
+		lineageTag: b6717ed1-a597-4f5b-aabc-b0609d1f537a
+		sourceLineageTag: ObjectName
+		summarizeBy: none
+		sourceColumn: ObjectName
+
+		annotation SummarizationSetBy = Automatic
+
+	column VersionLabel
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: a9063f8a-1b2a-46c7-a469-73132c6772b8
+		sourceLineageTag: VersionLabel
+		summarizeBy: none
+		sourceColumn: VersionLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChangeDescription
+		dataType: string
+		sourceProviderType: varchar(2000)
+		lineageTag: 5c08e0f5-3323-40ec-9f08-0dde263c959c
+		sourceLineageTag: ChangeDescription
+		summarizeBy: none
+		sourceColumn: ChangeDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScriptName
+		dataType: string
+		sourceProviderType: varchar(260)
+		lineageTag: c12f761a-7ee1-4b82-9a7c-6345b232ded1
+		sourceLineageTag: ScriptName
+		summarizeBy: none
+		sourceColumn: ScriptName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppliedTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 63eac446-d4dd-46e2-9499-196ff09534e1
+		sourceLineageTag: AppliedTimestamp
+		summarizeBy: none
+		sourceColumn: AppliedTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column AppliedBy
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 8b377fa7-c9a9-4235-9af2-ad1af0827a1a
+		sourceLineageTag: AppliedBy
+		summarizeBy: none
+		sourceColumn: AppliedBy
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SchemaVersionHistory = entity
+		mode: directLake
+		source
+			entityName: SchemaVersionHistory
+			schemaName: audit
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

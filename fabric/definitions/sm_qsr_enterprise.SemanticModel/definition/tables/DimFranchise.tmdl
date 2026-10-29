@@ -1,0 +1,109 @@
+table DimFranchise
+	lineageTag: d85e0450-ff80-4f8a-a3a4-457d72d84933
+	sourceLineageTag: [dim].[DimFranchise]
+
+	column FranchiseKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: eaf3bdfd-10f6-4878-bd89-57692187f02e
+		sourceLineageTag: FranchiseKey
+		summarizeBy: count
+		sourceColumn: FranchiseKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column FranchiseID
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 6f6b912b-aa22-4db5-b87e-e8f119bacb05
+		sourceLineageTag: FranchiseID
+		summarizeBy: none
+		sourceColumn: FranchiseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column FranchiseName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 285f3d77-d5ad-4494-99ec-f33eec4ffd09
+		sourceLineageTag: FranchiseName
+		summarizeBy: none
+		sourceColumn: FranchiseName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Territory
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 3e50f8ad-be9e-4514-affa-f432490b7963
+		sourceLineageTag: Territory
+		summarizeBy: none
+		sourceColumn: Territory
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgreementStartDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 4a0a70a7-0f4a-4ac9-bc54-361cf2df7ce3
+		sourceLineageTag: AgreementStartDate
+		summarizeBy: none
+		sourceColumn: AgreementStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: ae50f9d9-8bbb-410e-8d9e-6a48e70c01f1
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column EffectiveStartDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: b0e606ca-59af-4b2c-9f4a-1604d9abe8ee
+		sourceLineageTag: EffectiveStartDate
+		summarizeBy: none
+		sourceColumn: EffectiveStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EffectiveEndDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 84cad416-4a8e-413f-b29d-1685a0aca9d1
+		sourceLineageTag: EffectiveEndDate
+		summarizeBy: none
+		sourceColumn: EffectiveEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: d82ca8f7-58d5-4ea9-bc38-b1a3affe3574
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimFranchise = entity
+		mode: directLake
+		source
+			entityName: DimFranchise
+			schemaName: dim
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

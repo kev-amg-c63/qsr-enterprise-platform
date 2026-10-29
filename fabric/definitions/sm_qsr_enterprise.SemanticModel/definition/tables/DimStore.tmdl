@@ -1,0 +1,139 @@
+table DimStore
+	lineageTag: 846bc494-7877-4d8d-8773-71aa6c03fdb2
+	sourceLineageTag: [dim].[DimStore]
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: d934f971-639f-4b8b-a73e-5fef8f56c7c9
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreID
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 16c06499-bc55-428c-b600-0cc5d89d096f
+		sourceLineageTag: StoreID
+		summarizeBy: none
+		sourceColumn: StoreID
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 5f3be94a-cc96-4283-8202-378e9295ec96
+		sourceLineageTag: StoreName
+		summarizeBy: none
+		sourceColumn: StoreName
+
+		annotation SummarizationSetBy = Automatic
+
+	column FranchiseID
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: 77b3c641-08d3-4ea1-8558-0a691ef34008
+		sourceLineageTag: FranchiseID
+		summarizeBy: none
+		sourceColumn: FranchiseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		sourceProviderType: varchar(100)
+		lineageTag: 7f41ec05-2e0c-4e63-98b8-0683bdee7876
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		sourceProviderType: varchar(2)
+		lineageTag: b1bce93a-6d2b-4eb3-bc51-7ef50930af41
+		sourceLineageTag: StateCode
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 3fcf9daa-9410-4404-a2bc-fac980444604
+		sourceLineageTag: Region
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpenDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 305e9564-d6e5-4da0-b405-c95a4a39d180
+		sourceLineageTag: OpenDate
+		summarizeBy: none
+		sourceColumn: OpenDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: a37603dd-c7cc-4bd0-ac4a-3fa763ac1c43
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+		annotation SummarizationSetBy = Automatic
+
+	column EffectiveStartDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 2363b828-a11c-439f-a964-4c6194ec7381
+		sourceLineageTag: EffectiveStartDate
+		summarizeBy: none
+		sourceColumn: EffectiveStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EffectiveEndDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 0bd9290e-e8d2-4842-858e-ce8cf4a68511
+		sourceLineageTag: EffectiveEndDate
+		summarizeBy: none
+		sourceColumn: EffectiveEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 5f7970a4-1e24-47fb-91b4-7a70a610849d
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimStore = entity
+		mode: directLake
+		source
+			entityName: DimStore
+			schemaName: dim
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

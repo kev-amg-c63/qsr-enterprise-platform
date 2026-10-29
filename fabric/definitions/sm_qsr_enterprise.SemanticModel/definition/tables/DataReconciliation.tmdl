@@ -1,0 +1,124 @@
+table DataReconciliation
+	lineageTag: 4e2c94f9-959e-4ddc-9cba-3e91bbe8ccb3
+	sourceLineageTag: [audit].[DataReconciliation]
+
+	column ReconciliationKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 8ba97cd9-08d2-4958-9b43-b07fd1280b96
+		sourceLineageTag: ReconciliationKey
+		summarizeBy: count
+		sourceColumn: ReconciliationKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PipelineExecutionKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 81bb64a4-a43e-454f-a8d9-b5a833233ad4
+		sourceLineageTag: PipelineExecutionKey
+		summarizeBy: count
+		sourceColumn: PipelineExecutionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DatasetName
+		dataType: string
+		sourceProviderType: varchar(150)
+		lineageTag: 24caf970-8c52-43d1-81b5-0abdc4952130
+		sourceLineageTag: DatasetName
+		summarizeBy: none
+		sourceColumn: DatasetName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReconciliationDate
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 5697b1bb-1c92-45c4-b193-be7c87235c49
+		sourceLineageTag: ReconciliationDate
+		summarizeBy: none
+		sourceColumn: ReconciliationDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceRowCount
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 228df9ce-f7c7-4a74-a928-a32a836d115b
+		sourceLineageTag: SourceRowCount
+		summarizeBy: sum
+		sourceColumn: SourceRowCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetRowCount
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 25fec2cd-dbb4-4421-95dc-2185240b854d
+		sourceLineageTag: TargetRowCount
+		summarizeBy: sum
+		sourceColumn: TargetRowCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourceAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 91833e6f-c8a0-4430-a213-216376712607
+		sourceLineageTag: SourceAmount
+		summarizeBy: sum
+		sourceColumn: SourceAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TargetAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 4b1572e2-6cf8-4e00-9a4c-3f32b071934d
+		sourceLineageTag: TargetAmount
+		summarizeBy: sum
+		sourceColumn: TargetAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DifferenceAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 8124dc3f-9849-4d27-8f3d-ce27bbc5d5f0
+		sourceLineageTag: DifferenceAmount
+		summarizeBy: sum
+		sourceColumn: DifferenceAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ReconciliationStatus
+		dataType: string
+		sourceProviderType: varchar(30)
+		lineageTag: a76f5834-076a-4b7a-b1f1-56fb5e118458
+		sourceLineageTag: ReconciliationStatus
+		summarizeBy: none
+		sourceColumn: ReconciliationStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DataReconciliation = entity
+		mode: directLake
+		source
+			entityName: DataReconciliation
+			schemaName: audit
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

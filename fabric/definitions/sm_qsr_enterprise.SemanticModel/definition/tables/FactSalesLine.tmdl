@@ -1,0 +1,189 @@
+table FactSalesLine
+	lineageTag: 5cfe98ed-5d87-48c4-9c06-ae224d244abe
+	sourceLineageTag: [fact].[FactSalesLine]
+
+	/// Net sales at product line grain; do not add to header Total Sales.
+	measure 'Line Sales' = SUM ( FactSalesLine[NetLineAmount] )
+		formatString: $#,0.00;($#,0.00);$0.00
+		displayFolder: Sales
+		lineageTag: 19f10d32-af33-4ad8-bc83-6140fc8d1386
+
+	column SalesLineKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 2bbcfd12-f897-4baf-b8fb-8196d12e940a
+		sourceLineageTag: SalesLineKey
+		summarizeBy: count
+		sourceColumn: SalesLineKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 400d28c2-6e55-4169-8931-97c4cf1e59f7
+		sourceLineageTag: SalesKey
+		summarizeBy: count
+		sourceColumn: SalesKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TransactionID
+		dataType: string
+		sourceProviderType: varchar(50)
+		lineageTag: 9f1f25c8-a070-42bf-884d-102b82042bbc
+		sourceLineageTag: TransactionID
+		summarizeBy: none
+		sourceColumn: TransactionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column LineNumber
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a42bd905-d4db-4ca0-a99f-5dcc252a7dc1
+		sourceLineageTag: LineNumber
+		summarizeBy: sum
+		sourceColumn: LineNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a5faeac5-ff32-4c48-a596-a9fe8d73367f
+		sourceLineageTag: DateKey
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 67328912-edb0-4b47-b899-170093c3c4c6
+		sourceLineageTag: StoreKey
+		summarizeBy: count
+		sourceColumn: StoreKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 68b48184-80ca-4ad5-97e8-42ce760e6b22
+		sourceLineageTag: ProductKey
+		summarizeBy: count
+		sourceColumn: ProductKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionKey
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 95cdd6b1-ec85-4507-ab97-c2c1bdcae3b8
+		sourceLineageTag: PromotionKey
+		summarizeBy: count
+		sourceColumn: PromotionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: double
+		sourceProviderType: decimal(18, 3)
+		lineageTag: ac6731fe-b6cd-4f47-8b80-70f73a2eeeeb
+		sourceLineageTag: Quantity
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UnitPrice
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 3e36f3d2-eecc-43ef-93d2-a4553e414a13
+		sourceLineageTag: UnitPrice
+		summarizeBy: sum
+		sourceColumn: UnitPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GrossLineAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: b94725c6-9187-4b36-bb80-ea2bdfd721a7
+		sourceLineageTag: GrossLineAmount
+		summarizeBy: sum
+		sourceColumn: GrossLineAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DiscountAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 68542772-6976-4cdf-a4dc-acb7b33bcc4b
+		sourceLineageTag: DiscountAmount
+		summarizeBy: sum
+		sourceColumn: DiscountAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NetLineAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: 85774bec-0c63-4c5d-bb11-3792a7876ccd
+		sourceLineageTag: NetLineAmount
+		summarizeBy: sum
+		sourceColumn: NetLineAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TaxAmount
+		dataType: double
+		sourceProviderType: decimal(18, 2)
+		lineageTag: cfd9531e-e476-4865-b06a-b03a0776c7ce
+		sourceLineageTag: TaxAmount
+		summarizeBy: sum
+		sourceColumn: TaxAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LoadTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: a11d1ed4-8d50-4960-b68a-83c43a705790
+		sourceLineageTag: LoadTimestamp
+		summarizeBy: none
+		sourceColumn: LoadTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactSalesLine = entity
+		mode: directLake
+		source
+			entityName: FactSalesLine
+			schemaName: fact
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+
